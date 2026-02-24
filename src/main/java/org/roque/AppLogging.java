@@ -5,7 +5,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Configuración mínima para reducir ruido de logs en consola durante la práctica.
+ * Configuración mínima de logging para reducir ruido de consola en ejecución local.
+ * <p>
+ * Se aplica tanto a SLF4J Simple como a JUL para evitar que mensajes informativos del stack
+ * (MongoDB/Hibernate) se vean como errores en la consola del IDE.
  */
 public final class AppLogging {
 
@@ -14,6 +17,9 @@ public final class AppLogging {
     private AppLogging() {
     }
 
+    /**
+     * Aplica la configuración de logs una sola vez por proceso.
+     */
     public static synchronized void configure() {
         if (initialized) {
             return;

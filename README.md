@@ -98,6 +98,12 @@ DbConnectionBean bean = HibernateUtil.getConnectionBean();
 System.out.println(bean.getJdbcUrl());
 ```
 
+Demo ejecutable del bean:
+
+```bash
+mvn -q -DskipTests exec:java -Dexec.mainClass=org.roque.orm.bean.BeanConnectionDemo
+```
+
 ## Ejecución de toda la práctica
 
 ```bash
