@@ -1,0 +1,14 @@
+<biblioteca>
+    <libro>
+        <id>1</id>
+        <titulo>Clean Code</titulo>
+        <autor>Robert C. Martin</autor>
+        <precio>35</precio>
+    </libro>
+    <libro>
+        <id>2</id>
+        <titulo>Effective Java</titulo>
+        <autor>Joshua Bloch</autor>
+        <precio>40</precio>
+    </libro>
+</biblioteca>
