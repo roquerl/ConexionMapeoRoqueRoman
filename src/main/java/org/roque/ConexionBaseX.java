@@ -6,32 +6,29 @@ import org.basex.query.QueryProcessor;
 
 import java.io.InputStream;
 
+/**
+ * A) Programa 1: conexión a BaseX y ejecución XPath/XQuery.
+ */
 public class ConexionBaseX {
 
     public static void main(String[] args) throws Exception {
+        String consulta = args.length > 0
+                ? args[0]
+                : "for $l in //libro where xs:decimal($l/precio) > 30 return $l/titulo/text()";
 
-        Context context = new Context();
+        try (Context context = new Context()) {
+            InputStream xmlStream = ConexionBaseX.class.getResourceAsStream("/biblioteca.xml");
+            if (xmlStream == null) {
+                throw new IllegalStateException("No se encontró biblioteca.xml en src/main/resources");
+            }
 
-        // Cargar XML desde resources correctamente
-        InputStream xmlStream =
-                ConexionBaseX.class.getResourceAsStream("/biblioteca.xml");
+            new CreateDB("Biblioteca", xmlStream).execute(context);
 
-        if (xmlStream == null) {
-            System.out.println("No se encontró biblioteca.xml en resources");
-            return;
+            try (QueryProcessor processor = new QueryProcessor(consulta, context)) {
+                System.out.println("=== Resultado BaseX ===");
+                System.out.println("Consulta: " + consulta);
+                System.out.println(processor.value());
+            }
         }
-
-        // Aquí NO usamos toString()
-        new CreateDB("Biblioteca", xmlStream).execute(context);
-
-        String query = "for $l in //libro return $l/titulo";
-
-        try (QueryProcessor processor =
-                     new QueryProcessor(query, context)) {
-
-            System.out.println(processor.value());
-        }
-
-        context.close();
     }
 }
