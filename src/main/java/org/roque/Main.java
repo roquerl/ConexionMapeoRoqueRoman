@@ -7,6 +7,7 @@ import org.roque.orm.OrmPracticaApp;
  */
 public class Main {
     public static void main(String[] args) throws Exception {
+        AppLogging.configure();
         System.out.println("=== A.1 BaseX ===");
         ConexionBaseX.main(new String[]{});
 

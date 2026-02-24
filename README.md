@@ -83,6 +83,21 @@ Incluido en `OrmPracticaApp`:
     - Función `CALCULAR_IVA`
     - Procedimiento `SUBIR_PRECIO`
 
+
+## Componente de conexión usando Bean (reutilizable)
+
+Se agregó `org.roque.orm.bean.DbConnectionBean` como componente JavaBean para centralizar la conexión a la BD ORM y reutilizarla desde cualquier programa.
+
+- Bean: `src/main/java/org/roque/orm/bean/DbConnectionBean.java`
+- Uso central: `HibernateUtil.getConnectionBean()`
+
+Ejemplo de uso desde otra clase:
+
+```java
+DbConnectionBean bean = HibernateUtil.getConnectionBean();
+System.out.println(bean.getJdbcUrl());
+```
+
 ## Ejecución de toda la práctica
 
 ```bash
