@@ -35,10 +35,13 @@ public class ConexionBaseX {
             String xmlPath = Paths.get(resource.toURI()).toString();
             new CreateDB("Biblioteca", xmlPath).execute(context);
 
-            try (QueryProcessor processor = new QueryProcessor(consulta, context)) {
+            QueryProcessor processor = new QueryProcessor(consulta, context);
+            try {
                 System.out.println("=== Resultado BaseX ===");
                 System.out.println("Consulta: " + consulta);
                 System.out.println(processor.value());
+            } finally {
+                processor.close();
             }
         } finally {
             context.close();
