@@ -16,19 +16,26 @@ public class ConexionBaseX {
                 ? args[0]
                 : "for $l in //libro where xs:decimal($l/precio) > 30 return $l/titulo/text()";
 
-        try (Context context = new Context()) {
-            InputStream xmlStream = ConexionBaseX.class.getResourceAsStream("/biblioteca.xml");
-            if (xmlStream == null) {
-                throw new IllegalStateException("No se encontró biblioteca.xml en src/main/resources");
+        Context context = new Context();
+        try {
+            try (InputStream xmlStream = ConexionBaseX.class.getResourceAsStream("/biblioteca.xml")) {
+                if (xmlStream == null) {
+                    throw new IllegalStateException("No se encontró biblioteca.xml en src/main/resources");
+                }
+
+                new CreateDB("Biblioteca", xmlStream).execute(context);
             }
 
-            new CreateDB("Biblioteca", xmlStream).execute(context);
-
-            try (QueryProcessor processor = new QueryProcessor(consulta, context)) {
+            QueryProcessor processor = new QueryProcessor(consulta, context);
+            try {
                 System.out.println("=== Resultado BaseX ===");
                 System.out.println("Consulta: " + consulta);
                 System.out.println(processor.value());
+            } finally {
+                processor.close();
             }
+        } finally {
+            context.close();
         }
     }
 }
