@@ -4,33 +4,62 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.roque.orm.bean.DbConnectionBean;
 import org.roque.orm.entity.Autor;
 import org.roque.orm.entity.Libro;
 import org.roque.orm.entity.Prestamo;
 
 import java.util.Properties;
 
+/**
+ * Utilidad central para inicializar y exponer el {@link SessionFactory} de Hibernate.
+ * <p>
+ * La configuración se obtiene desde un {@link DbConnectionBean} reutilizable, de modo que
+ * cualquier programa del proyecto pueda consultar o reutilizar la misma configuración de conexión.
+ */
 public final class HibernateUtil {
 
-    private static final SessionFactory SESSION_FACTORY = buildSessionFactory();
+    private static final DbConnectionBean CONNECTION_BEAN = buildDefaultConnectionBean();
+    private static final SessionFactory SESSION_FACTORY = buildSessionFactory(CONNECTION_BEAN);
 
     private HibernateUtil() {
     }
 
+    /**
+     * @return instancia única de {@link SessionFactory} para toda la aplicación.
+     */
     public static SessionFactory getSessionFactory() {
         return SESSION_FACTORY;
     }
 
-    private static SessionFactory buildSessionFactory() {
-        Properties settings = new Properties();
-        settings.put("hibernate.connection.driver_class", "org.h2.Driver");
-        settings.put("hibernate.connection.url", "jdbc:h2:mem:biblioteca_orm;DB_CLOSE_DELAY=-1");
-        settings.put("hibernate.connection.username", "sa");
-        settings.put("hibernate.connection.password", "");
-        settings.put("hibernate.hbm2ddl.auto", "create-drop");
-        settings.put("hibernate.show_sql", "true");
-        settings.put("hibernate.format_sql", "true");
-        settings.put("hibernate.highlight_sql", "true");
+    /**
+     * @return bean de conexión reutilizable desde cualquier clase/programa.
+     */
+    public static DbConnectionBean getConnectionBean() {
+        return CONNECTION_BEAN;
+    }
+
+    /**
+     * Construye la configuración por defecto del bean de conexión.
+     *
+     * @return bean con parámetros iniciales para la práctica.
+     */
+    private static DbConnectionBean buildDefaultConnectionBean() {
+        DbConnectionBean bean = new DbConnectionBean();
+        bean.setShowSql(false);
+        bean.setFormatSql(false);
+        bean.setHighlightSql(false);
+        return bean;
+    }
+
+    /**
+     * Construye el {@link SessionFactory} a partir del bean de conexión recibido.
+     *
+     * @param connectionBean bean con la configuración JDBC/Hibernate.
+     * @return sesión de fábrica lista para crear sesiones ORM.
+     */
+    private static SessionFactory buildSessionFactory(DbConnectionBean connectionBean) {
+        Properties settings = connectionBean.toHibernateProperties();
 
         StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .applySettings(settings)
