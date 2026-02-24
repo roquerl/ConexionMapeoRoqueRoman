@@ -20,18 +20,18 @@ public final class AppLogging {
         }
 
         // Logs SLF4J Simple (usados por Mongo driver y parte de Hibernate/JBoss Logging).
-        System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "warn");
+        System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "error");
         System.setProperty("org.slf4j.simpleLogger.log.org.mongodb.driver", "error");
-        System.setProperty("org.slf4j.simpleLogger.log.org.hibernate", "warn");
+        System.setProperty("org.slf4j.simpleLogger.log.org.hibernate", "error");
 
         // Logs JUL (en algunos entornos Hibernate/JBoss pueden enrutar por java.util.logging).
         Logger root = Logger.getLogger("");
-        root.setLevel(Level.WARNING);
+        root.setLevel(Level.SEVERE);
         for (Handler handler : root.getHandlers()) {
-            handler.setLevel(Level.WARNING);
+            handler.setLevel(Level.SEVERE);
         }
 
-        Logger.getLogger("org.hibernate").setLevel(Level.WARNING);
+        Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
 
         initialized = true;
     }
