@@ -13,6 +13,7 @@ import org.bson.Document;
 public class ConexionMongo {
 
     public static void main(String[] args) {
+        AppLogging.configure();
         String conexion = System.getProperty("mongo.uri", "mongodb://localhost:27017");
         String filtroTitulo = args.length > 0 ? args[0] : null;
 

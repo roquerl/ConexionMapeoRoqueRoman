@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 public class ConexionBaseX {
 
     public static void main(String[] args) throws Exception {
+        AppLogging.configure();
         String consulta = args.length > 0
                 ? args[0]
                 : "for $l in //libro where xs:decimal($l/precio) > 30 return data($l/titulo)";
