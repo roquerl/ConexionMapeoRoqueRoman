@@ -11,10 +11,15 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * B) Herramientas ORM + consultas HQL + caso de uso.
+ * Programa de la parte B: ORM, HQL y caso de uso completo.
  */
 public class OrmPracticaApp {
 
+    /**
+     * Ejecuta toda la parte ORM/HQL.
+     *
+     * @param args argumentos de línea de comandos (no se usan).
+     */
     public static void main(String[] args) {
         insertarDatosIniciales();
 
@@ -31,6 +36,9 @@ public class OrmPracticaApp {
         HibernateUtil.getSessionFactory().close();
     }
 
+    /**
+     * Inserta datos de ejemplo iniciales para autores, libros y préstamos.
+     */
     private static void insertarDatosIniciales() {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
@@ -54,7 +62,9 @@ public class OrmPracticaApp {
         session.close();
     }
 
-    // HQL 1: join simple.
+    /**
+     * HQL 1: join simple entre Libro y Autor.
+     */
     private static void ejemploHqlJoin() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             List<Object[]> rows = session.createQuery(
@@ -65,7 +75,9 @@ public class OrmPracticaApp {
         }
     }
 
-    // HQL 2: join de 2+ tablas (Libro + Autor + Prestamo).
+    /**
+     * HQL 2: join entre tres tablas (Prestamo, Libro y Autor).
+     */
     private static void ejemploHqlJoinDosTablas() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             List<Object[]> rows = session.createQuery(
@@ -76,7 +88,9 @@ public class OrmPracticaApp {
         }
     }
 
-    // HQL 3: subconsulta.
+    /**
+     * HQL 3: subconsulta para libros por encima del precio medio.
+     */
     private static void ejemploHqlSubconsulta() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             List<Libro> caros = session.createQuery(
@@ -87,7 +101,9 @@ public class OrmPracticaApp {
         }
     }
 
-    // Caso de uso: selecciones simples + joins.
+    /**
+     * Caso de uso: selección simple y join básico.
+     */
     private static void seleccionesSimplesYJoins() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             List<Libro> libros = session.createQuery("from Libro", Libro.class).list();
@@ -101,7 +117,9 @@ public class OrmPracticaApp {
         }
     }
 
-    // Caso de uso: DML (insert, update, delete).
+    /**
+     * Caso de uso DML: inserción, actualización y borrado.
+     */
     private static void sentenciasDml() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction tx = session.beginTransaction();
@@ -109,24 +127,26 @@ public class OrmPracticaApp {
             Autor nuevoAutor = new Autor("Martin Fowler");
             Libro refactoring = new Libro("Refactoring", new BigDecimal("45.00"));
             nuevoAutor.addLibro(refactoring);
-            session.persist(nuevoAutor); // INSERT
+            session.persist(nuevoAutor);
 
             int updated = session.createMutationQuery(
                             "update Libro l set l.precio = l.precio + 5 where l.titulo = :titulo")
                     .setParameter("titulo", "Clean Code")
-                    .executeUpdate(); // UPDATE
+                    .executeUpdate();
 
             int deleted = session.createMutationQuery(
                             "delete Prestamo p where p.socio = :socio")
                     .setParameter("socio", "Luis")
-                    .executeUpdate(); // DELETE
+                    .executeUpdate();
 
             tx.commit();
             System.out.println("DML -> insert(1 autor+1 libro), update=" + updated + ", delete=" + deleted);
         }
     }
 
-    // Caso de uso: una función + un procedimiento (nativo SQL sobre H2).
+    /**
+     * Caso de uso SQL nativo: crea aliases H2, ejecuta función y procedimiento.
+     */
     private static void procedimientoYFuncion() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction tx = session.beginTransaction();

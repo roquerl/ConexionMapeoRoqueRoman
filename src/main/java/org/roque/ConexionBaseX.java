@@ -8,12 +8,19 @@ import java.net.URL;
 import java.nio.file.Paths;
 
 /**
- * A) Programa 1: conexión a BaseX y ejecución XPath/XQuery.
+ * Programa A.1: conexión a BaseX y ejecución de una consulta XQuery.
  */
 public class ConexionBaseX {
 
+    /**
+     * Ejecuta la consulta XQuery sobre {@code biblioteca.xml} cargado como DB temporal "Biblioteca".
+     *
+     * @param args argumento opcional con la consulta XQuery personalizada.
+     * @throws Exception si falla la carga del XML, creación de DB o ejecución de consulta.
+     */
     public static void main(String[] args) throws Exception {
         AppLogging.configure();
+
         String consulta = args.length > 0
                 ? args[0]
                 : "for $l in //libro where xs:decimal($l/precio) > 30 return data($l/titulo)";

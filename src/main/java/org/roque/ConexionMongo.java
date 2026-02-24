@@ -8,12 +8,18 @@ import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
 /**
- * A) Programa 2: conexión a MongoDB y ejecución de find.
+ * Programa A.2: conexión a MongoDB y ejecución de una consulta {@code find}.
  */
 public class ConexionMongo {
 
+    /**
+     * Ejecuta una búsqueda en la colección {@code biblioteca}.
+     *
+     * @param args argumento opcional con el título exacto a filtrar.
+     */
     public static void main(String[] args) {
         AppLogging.configure();
+
         String conexion = System.getProperty("mongo.uri", "mongodb://localhost:27017");
         String filtroTitulo = args.length > 0 ? args[0] : null;
 

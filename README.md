@@ -104,6 +104,18 @@ Demo ejecutable del bean:
 mvn -q -DskipTests exec:java -Dexec.mainClass=org.roque.orm.bean.BeanConnectionDemo
 ```
 
+
+## Documentación JavaDoc
+
+Se añadió JavaDoc detallado en todas las clases de `src/main/java` y `src/test/java`, incluyendo:
+
+- propósito de cada clase,
+- descripción de atributos,
+- parámetros y retornos de métodos,
+- y propósito de utilidades/entrypoints.
+
+También se documentó `pom.xml` con comentarios XML para explicar cada bloque (identidad del proyecto, propiedades, dependencias y plugins).
+
 ## Ejecución de toda la práctica
 
 ```bash

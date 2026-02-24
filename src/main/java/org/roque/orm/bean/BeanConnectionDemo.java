@@ -5,17 +5,14 @@ import org.roque.AppLogging;
 import org.roque.orm.HibernateUtil;
 
 /**
- * Demo mínima para evidenciar el uso del componente de conexión basado en JavaBean.
- * <p>
- * Esta clase obtiene el {@link DbConnectionBean} desde {@link HibernateUtil}, muestra sus
- * propiedades principales y abre una sesión para validar que la conexión ORM está operativa.
+ * Demo ejecutable para validar que el bean de conexión ORM funciona correctamente.
  */
 public class BeanConnectionDemo {
 
     /**
-     * Punto de entrada de la demostración.
+     * Muestra la configuración del bean y prueba la conexión con {@code SELECT 1}.
      *
-     * @param args no se utilizan.
+     * @param args argumentos de línea de comandos (no se usan).
      */
     public static void main(String[] args) {
         AppLogging.configure();

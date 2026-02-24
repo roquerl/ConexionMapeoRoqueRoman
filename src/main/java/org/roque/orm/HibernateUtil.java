@@ -12,37 +12,40 @@ import org.roque.orm.entity.Prestamo;
 import java.util.Properties;
 
 /**
- * Utilidad central para inicializar y exponer el {@link SessionFactory} de Hibernate.
+ * Utilidad central para crear y exponer {@link SessionFactory} de Hibernate.
  * <p>
- * La configuración se obtiene desde un {@link DbConnectionBean} reutilizable, de modo que
- * cualquier programa del proyecto pueda consultar o reutilizar la misma configuración de conexión.
+ * Utiliza un {@link DbConnectionBean} compartido para centralizar la configuración de conexión.
  */
 public final class HibernateUtil {
 
+    /** Bean de conexión compartido por toda la aplicación. */
     private static final DbConnectionBean CONNECTION_BEAN = buildDefaultConnectionBean();
+
+    /** Fábrica de sesiones singleton para las operaciones ORM. */
     private static final SessionFactory SESSION_FACTORY = buildSessionFactory(CONNECTION_BEAN);
 
+    /** Constructor privado para clase utilitaria estática. */
     private HibernateUtil() {
     }
 
     /**
-     * @return instancia única de {@link SessionFactory} para toda la aplicación.
+     * @return fábrica de sesiones ORM de la aplicación.
      */
     public static SessionFactory getSessionFactory() {
         return SESSION_FACTORY;
     }
 
     /**
-     * @return bean de conexión reutilizable desde cualquier clase/programa.
+     * @return bean de conexión reutilizable desde cualquier clase.
      */
     public static DbConnectionBean getConnectionBean() {
         return CONNECTION_BEAN;
     }
 
     /**
-     * Construye la configuración por defecto del bean de conexión.
+     * Construye configuración por defecto del bean de conexión.
      *
-     * @return bean con parámetros iniciales para la práctica.
+     * @return bean configurado con valores de la práctica.
      */
     private static DbConnectionBean buildDefaultConnectionBean() {
         DbConnectionBean bean = new DbConnectionBean();
@@ -53,10 +56,10 @@ public final class HibernateUtil {
     }
 
     /**
-     * Construye el {@link SessionFactory} a partir del bean de conexión recibido.
+     * Crea {@link SessionFactory} a partir de un bean de conexión.
      *
-     * @param connectionBean bean con la configuración JDBC/Hibernate.
-     * @return sesión de fábrica lista para crear sesiones ORM.
+     * @param connectionBean bean con configuración JDBC/Hibernate.
+     * @return fábrica de sesiones lista para usar.
      */
     private static SessionFactory buildSessionFactory(DbConnectionBean connectionBean) {
         Properties settings = connectionBean.toHibernateProperties();

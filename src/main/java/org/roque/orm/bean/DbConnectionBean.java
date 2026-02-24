@@ -10,13 +10,28 @@ import java.util.Properties;
  */
 public class DbConnectionBean {
 
+    /** Clase del driver JDBC. */
     private String driverClass = "org.h2.Driver";
+
+    /** URL JDBC de la base de datos. */
     private String jdbcUrl = "jdbc:h2:mem:biblioteca_orm;DB_CLOSE_DELAY=-1";
+
+    /** Usuario JDBC. */
     private String username = "sa";
+
+    /** Contraseña JDBC. */
     private String password = "";
+
+    /** Estrategia de creación/actualización de esquema (`hibernate.hbm2ddl.auto`). */
     private String hbm2ddlAuto = "create-drop";
+
+    /** Indica si Hibernate debe imprimir SQL. */
     private boolean showSql = false;
+
+    /** Indica si Hibernate debe formatear SQL en consola. */
     private boolean formatSql = false;
+
+    /** Indica si Hibernate debe colorear SQL en consola. */
     private boolean highlightSql = false;
 
     /**
